@@ -17,7 +17,7 @@ An educational cybersecurity case study focused on authentication weaknesses and
 | Authentication test | Medusa 2.3; **two SSH password candidates**, one valid training credential reported as `[SUCCESS]` |
 | Real-world targets tested | **None** |
 
-**[Read the verified lab evidence and defensive analysis](docs/2026-11-08-verified-lab-evidence.md)**
+**[Read the full verified lab report](docs/2026-11-08-verified-lab-evidence.md)** · **[See transcribed terminal evidence](evidence/verified-terminal-excerpts.md)** · **[DIO submission guide](docs/dio-submission.md)**
 
 > These are **observations from an intentionally vulnerable training machine**, not evidence of an external compromise or a production security assessment. The account used a known lab default password; no private or leaked credentials were used.
 
@@ -44,9 +44,11 @@ Windows host
 - [x] Perform an Nmap TCP connect scan against the isolated test target.
 - [x] Prepare a two-candidate training wordlist and run a limited Medusa SSH authentication check.
 - [x] Document actual observed outcomes and defensive mitigations.
-- [ ] Upload sanitized screenshots to the repository, if required for DIO submission.
-- [ ] Review the DIO challenge rubric and submit this repository link.
-- [ ] Optional extended challenge work: FTP, DVWA web login and SMB/password-spraying scenarios (not executed here).
+- [x] Publish selected, clearly labeled terminal evidence transcribed from actual screenshots.
+- [x] Prepare a submission summary and links for DIO.
+- [ ] **User action:** paste the repository URL in DIO's **Entregar Projeto** form.
+- [ ] **Optional only:** add sanitized screenshots if requested by the evaluator (not presently in the repo).
+- [ ] **Not executed:** FTP, DVWA web login and SMB/password-spraying scenarios.
 
 ## Tools and capabilities demonstrated
 
@@ -72,8 +74,12 @@ Windows host
 - No production systems, third-party endpoints, real employee accounts, or leaked password lists.
 - Only the **SSH** authentication scenario has been verified; FTP, DVWA and SMB outcomes are not claimed.
 - Test accounts on Metasploitable 2 are part of its public, intentionally vulnerable training image.
-- Screenshots have been captured during the lab session but have **not** been uploaded to this repository yet.
+- Screenshots were captured during the lab session; **only selected observations transcribed from them are currently in the repository**. The transcriptions are not raw machine-generated log files.
 - No persistence, privilege escalation, lateral movement, or exfiltration was performed.
+
+## Submission
+
+The repository documentation and verified SSH adaptation are ready for submission. Use the [DIO submission guide](docs/dio-submission.md) for the project link and concise description. **DIO decides whether this adapted scenario satisfies its evaluation criteria.**
 
 ## Learning context
 
