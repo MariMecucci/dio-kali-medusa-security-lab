@@ -1,72 +1,84 @@
 # Authentication Security Lab | Kali Linux + Medusa
 
 > **DIO / Santander Cybersecurity — Educational Project**  
-> **Status:** Environment preparation · **Execution evidence:** Not yet collected
+> **Status:** Isolated lab, network validation, service discovery, and a controlled SSH authentication demonstration **completed**. Other challenge scenarios remain optional follow-up work.
 
-An educational cybersecurity case study focused on authentication weaknesses and defensive controls. The lab will use **Kali Linux**, **Medusa**, and intentionally vulnerable test systems in a **private, isolated VirtualBox network**.
+An educational cybersecurity case study focused on authentication weaknesses and defensive controls. The lab uses **Kali Linux 2026.3**, **Medusa 2.3**, and **Metasploitable 2** inside a private, isolated **Oracle VirtualBox Internal Network**. It does **not** assess a real company or public service.
 
-This repository documents a training exercise—not a penetration test against any real company or public service. All users, passwords and targets used in demonstrations will be created for the lab.
+## Verified practical results — November 8, 2026
 
-## Project objective
+| Check | Verified observation |
+| --- | --- |
+| Internal network | `dio-cyber-lab`; no bridged network on the target |
+| Kali Linux | `192.168.77.10` |
+| Metasploitable 2 | `192.168.77.20` |
+| Connectivity | 4/4 ICMP replies, **0% loss** |
+| Service discovery | Nmap confirmed accessible SSH, Telnet, HTTP, SMB and other lab services |
+| Authentication test | Medusa 2.3; **two SSH password candidates**, one valid training credential reported as `[SUCCESS]` |
+| Real-world targets tested | **None** |
 
-Understand how weak passwords and poorly configured authentication services can enable repeated login attempts, and document practical mitigation measures.
+**[Read the verified lab evidence and defensive analysis](docs/2026-11-08-verified-lab-evidence.md)**
 
-The DIO challenge covers the preparation of a Kali Linux and Metasploitable 2 lab and controlled scenarios involving **FTP**, a vulnerable web login (**DVWA**), and **SMB** authentication. The exact experiments and results will be documented after execution.
+> These are **observations from an intentionally vulnerable training machine**, not evidence of an external compromise or a production security assessment. The account used a known lab default password; no private or leaked credentials were used.
 
-## Planned architecture
+## Architecture
 
 ```text
 Windows host
 └── Oracle VirtualBox
-    └── Isolated lab network (internal network)
-        ├── Kali Linux — authorized testing machine
-        └── Metasploitable 2 — intentionally vulnerable target
-            └── DVWA (if configured for the web-login scenario)
+    └── Internal Network: dio-cyber-lab (isolated from external networks)
+        ├── Kali Linux 2026.3 — 192.168.77.10/24
+        │   ├── Nmap
+        │   └── Medusa 2.3
+        └── Metasploitable 2 — 192.168.77.20/24
+            └── Deliberately vulnerable SSH, HTTP, SMB, etc.
 ```
 
-**Isolation rule:** The vulnerable target must not be exposed to the household network or public internet. No bridged adapter, router port forwarding, or external target testing. The lab network configuration will be verified before any test.
+**Isolation requirement:** Never bridge the Metasploitable guest to a household or public network, forward ports to it, or run tests on systems without explicit authorization. At the time of the demonstrated tests, both VMs used the internal lab network. IP addresses were assigned temporarily and may need to be reapplied after restart.
 
-## Tools and concepts
+## Technical workflow
 
-| Component | Role |
+- [x] Prepare Kali Linux and a Metasploitable 2 VirtualBox guest.
+- [x] Isolate both guests in the VirtualBox internal network `dio-cyber-lab`.
+- [x] Assign test-only private addresses and verify connectivity.
+- [x] Perform an Nmap TCP connect scan against the isolated test target.
+- [x] Prepare a two-candidate training wordlist and run a limited Medusa SSH authentication check.
+- [x] Document actual observed outcomes and defensive mitigations.
+- [ ] Upload sanitized screenshots to the repository, if required for DIO submission.
+- [ ] Review the DIO challenge rubric and submit this repository link.
+- [ ] Optional extended challenge work: FTP, DVWA web login and SMB/password-spraying scenarios (not executed here).
+
+## Tools and capabilities demonstrated
+
+| Tool / concept | Demonstrated use |
 | --- | --- |
-| Oracle VirtualBox | Virtualization and network isolation |
-| Kali Linux | Security testing environment |
-| Metasploitable 2 | Deliberately vulnerable practice target |
-| Medusa | Authentication test tool used only against lab services |
-| FTP / SMB / DVWA | Educational authentication scenarios |
-| GitHub | Versioned documentation and evidence |
+| VirtualBox | Virtual machine configuration and internal network isolation |
+| Kali Linux | Authorized lab testing environment |
+| Metasploitable 2 | Intentionally vulnerable test target |
+| Linux networking | Manual static IPv4 address configuration and ICMP reachability checks |
+| Nmap | TCP service enumeration on a specified training host |
+| Medusa | Limited SSH authentication test using a small local wordlist |
+| GitHub | Evidence-backed technical documentation |
 
-## Planned workflow
+## Findings and mitigations
 
-- [ ] Verify virtual machines, resource allocation, and isolated networking.
-- [ ] Capture the lab topology and assigned private IP addresses.
-- [ ] Identify enabled services **only on the lab target**.
-- [ ] Prepare small lists of fictional test accounts and passwords.
-- [ ] Run limited, authorized authentication tests in the isolated lab.
-- [ ] Capture evidence of observed results, including unsuccessful attempts.
-- [ ] Explain root causes, limitations, and defensive mitigations.
-- [ ] Review the documentation and submit the GitHub repository to DIO.
+**Finding:** A known default password on the deliberately vulnerable lab machine permitted a successful SSH authentication attempt. This confirms the weakness of retaining default credentials in this specific training scenario; it does **not** prove a broader brute-force bypass.
 
-## Evidence and findings
-
-**Not yet executed.** Screenshots, tool output, service versions, and conclusions will be added only after they have been observed and validated in the lab. No sample output will be presented as a real result.
-
-## Defensive perspective
-
-The final analysis will assess password policy, multi-factor authentication where supported, login throttling and lockouts, monitoring and alerting, service exposure, and secure configuration. Controls will be discussed in the context of each tested protocol.
+**Recommended defenses:** remove default credentials, enforce strong unique secrets or SSH key authentication, restrict access to administrative services, monitor authentication events, and apply rate limiting/MFA where appropriate.
 
 ## Scope and limitations
 
-- This is an **authorized educational lab**, not a commercial security assessment.
-- Metasploitable 2 is intentionally unsafe; it must stay isolated.
-- No real identities, leaked credential lists, company systems, or internet-facing services.
-- Findings will describe the lab only, not claims about real-world organizations.
+- Educational, authorized exercise in a controlled network.
+- No production systems, third-party endpoints, real employee accounts, or leaked password lists.
+- Only the **SSH** authentication scenario has been verified; FTP, DVWA and SMB outcomes are not claimed.
+- Test accounts on Metasploitable 2 are part of its public, intentionally vulnerable training image.
+- Screenshots have been captured during the lab session but have **not** been uploaded to this repository yet.
+- No persistence, privilege escalation, lateral movement, or exfiltration was performed.
 
 ## Learning context
 
-Based on the DIO challenge **“Simulando um Ataque de Brute Force de Senhas com Medusa e Kali Linux”** from the Santander Cybersecurity learning path. This repository is an original learning artifact and is not an official DIO repository.
+Based on the DIO challenge **“Simulando um Ataque de Brute Force de Senhas com Medusa e Kali Linux”** from the Santander Cybersecurity learning path. This is an original learning artifact, not an official DIO repository.
 
 ---
 
-*Documentation will evolve as each practical activity is completed.*
+*Evidence-led documentation · isolated training environment · no real-world targets tested.*
